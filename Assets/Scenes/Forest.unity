@@ -147,18 +147,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 12202649}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 464684467}
   - {fileID: 1176792015}
-  m_Father: {fileID: 57920592}
+  m_Father: {fileID: 78859729}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 50, y: 120}
+  m_AnchoredPosition: {x: -961.75, y: -218.99997}
   m_SizeDelta: {x: 80, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &12202651
@@ -370,7 +370,6 @@ RectTransform:
   - {fileID: 917409048}
   - {fileID: 78859729}
   - {fileID: 1820836217}
-  - {fileID: 12202650}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -409,6 +408,7 @@ RectTransform:
   - {fileID: 1314670641}
   - {fileID: 222466532}
   - {fileID: 1357979588}
+  - {fileID: 12202650}
   m_Father: {fileID: 57920592}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2645,6 +2645,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1087324306}
   - component: {fileID: 1087324305}
+  - component: {fileID: 1087324307}
   m_Layer: 0
   m_Name: Deer NavMesh Surface
   m_TagString: Untagged
@@ -2698,6 +2699,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1087324307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1087324304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c9ae993a38ec84f9ad503a6d398218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1098142246
 GameObject:
   m_ObjectHideFlags: 0
@@ -4093,6 +4106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1856420851}
   - component: {fileID: 1856420850}
+  - component: {fileID: 1856420852}
   m_Layer: 0
   m_Name: Monkey NavMesh Surface
   m_TagString: Untagged
@@ -4146,6 +4160,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1856420852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1856420849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c9ae993a38ec84f9ad503a6d398218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1874998040
 GameObject:
   m_ObjectHideFlags: 0
@@ -4156,6 +4182,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1874998042}
   - component: {fileID: 1874998041}
+  - component: {fileID: 1874998043}
   m_Layer: 0
   m_Name: Sparrow NavMesh Surface
   m_TagString: Untagged
@@ -4209,6 +4236,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1874998043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874998040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c9ae993a38ec84f9ad503a6d398218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2033666960
 GameObject:
   m_ObjectHideFlags: 0
