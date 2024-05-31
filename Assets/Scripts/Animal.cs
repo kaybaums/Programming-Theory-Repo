@@ -7,7 +7,7 @@ using TMPro;
 
 public class Animal : MonoBehaviour
 {
-    private int animalHappiness = 5;
+    protected private int animalHappiness = 5;
 
     private BuildingUI buildingUI;
     private Animator animator;
@@ -16,8 +16,8 @@ public class Animal : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private GameManager gameManager;
 
-    [SerializeField] GameObject happyIndicator;
-    [SerializeField] GameObject sadIndicator;
+    [SerializeField] private GameObject happyIndicator;
+    [SerializeField] private GameObject sadIndicator;
 
     public bool gameWon = false;
     public bool gameLost = false;
@@ -35,10 +35,8 @@ public class Animal : MonoBehaviour
         navMeshAgent.destination = new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 0.0f));
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Walk()
     {
-
         // while animal is not at destination, use walking animation
         if (Mathf.Abs(transform.position.x - navMeshAgent.destination.x) > 0.9f && Mathf.Abs(transform.position.z - navMeshAgent.destination.z) > 0.9f)
         {
@@ -50,8 +48,6 @@ public class Animal : MonoBehaviour
             navMeshAgent.speed = 0.0f;
             animator.SetFloat("ani_speed", 0);
         }
-
-        
     }
 
     public void LookSad()
