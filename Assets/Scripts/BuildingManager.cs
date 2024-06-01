@@ -10,16 +10,18 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] public GameObject sakuraTree;
     [SerializeField] public List<GameObject> rocksList;
     [SerializeField] public List<GameObject> grassList;
-    [SerializeField] public List<GameObject> mushroomList;
+    [SerializeField] public List<GameObject> foodList;
 
     private BuildingUI buildingUI;
-    public UpdateTextCounter updateTextCounter;
+    private Keeper keeper;
+    private AdoptAnimal adoptAnimal;
 
     // Start is called before the first frame update
     void Start()
     {
         buildingUI = GameObject.Find("Building UI").GetComponent<BuildingUI>();
-        updateTextCounter = GameObject.FindWithTag("Counter").GetComponent <UpdateTextCounter>();
+        keeper = GameObject.Find("Keeper").GetComponent <Keeper>();
+        adoptAnimal = GameObject.Find("Animal UI").GetComponent<AdoptAnimal>();
     }
 
     // Update is called once per frame
@@ -35,29 +37,34 @@ public class BuildingManager : MonoBehaviour
         if (index == 0)
         {
             Instantiate(firTree, position, Quaternion.identity);
-            updateTextCounter.UpdateTreeCount();
+            keeper.UpdateTreeCount();
         }
         else if (index == 1)
         {
             Instantiate(sakuraTree, position, Quaternion.identity);
-            updateTextCounter.UpdateTreeCount();
+            keeper.UpdateTreeCount();
         }
         else if (index == 2)
         {
             Instantiate(rocksList[buildingUI.rockIndex], position, Quaternion.identity);
-            updateTextCounter.UpdateRocksCount();
+            keeper.UpdateRocksCount();
         }
         else if (index == 3)
         {
             Instantiate(grassList[buildingUI.grassIndex], position, Quaternion.identity);
-            updateTextCounter.UpdateGrassCount();
+            keeper.UpdateGrassCount();
         }
         else if (index == 4)
         {
-            Instantiate(mushroomList[buildingUI.mushIndex], position, Quaternion.identity);
-            updateTextCounter.UpdateMushroomCount();
+            Instantiate(foodList[buildingUI.foodIndex], position, Quaternion.identity);
+            keeper.UpdateFoodCount();
         }
         
+    }
+
+    public void SpawnAdoptedAnimal(int index, Vector3 position)
+    {
+
     }
 
 }

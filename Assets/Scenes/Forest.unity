@@ -123,6 +123,52 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &3828933
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3828935}
+  - component: {fileID: 3828934}
+  m_Layer: 0
+  m_Name: Keeper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &3828934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3828933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87a8de090339e8c4297d69ecccea6409, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  qualitySlider: {fileID: 12202651}
+  animals: []
+--- !u!4 &3828935
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3828933}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.1700587, y: -9.244728, z: -0.5395895}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &12202649
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,7 +180,7 @@ GameObject:
   - component: {fileID: 12202650}
   - component: {fileID: 12202651}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: Habitat Quality
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2365,7 +2411,7 @@ MonoBehaviour:
   currentIndex: 0
   rockIndex: 0
   grassIndex: 0
-  mushIndex: 0
+  foodIndex: 0
   isBlocked: 0
 --- !u!1 &965808241
 GameObject:
@@ -3425,8 +3471,7 @@ MonoBehaviour:
   sakuraTree: {fileID: 0}
   rocksList: []
   grassList: []
-  mushroomList: []
-  updateTextCounter: {fileID: 0}
+  foodList: []
 --- !u!4 &1389334790
 Transform:
   m_ObjectHideFlags: 0
@@ -4577,3 +4622,4 @@ SceneRoots:
   - {fileID: 660800059}
   - {fileID: 38360081}
   - {fileID: 1389334790}
+  - {fileID: 3828935}

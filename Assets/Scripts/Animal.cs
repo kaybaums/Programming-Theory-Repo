@@ -7,11 +7,11 @@ using TMPro;
 
 public class Animal : MonoBehaviour
 {
-    protected private int animalHappiness = 5;
+    public float animalHappiness = 0.2f;
 
     private BuildingUI buildingUI;
     private Animator animator;
-    private UpdateTextCounter updateTextCounter;
+    private Keeper keeper;
 
     private NavMeshAgent navMeshAgent;
     private GameManager gameManager;
@@ -19,23 +19,26 @@ public class Animal : MonoBehaviour
     [SerializeField] private GameObject happyIndicator;
     [SerializeField] private GameObject sadIndicator;
 
-    public bool gameWon = false;
-    public bool gameLost = false;
+    private int treesWanted {  get; set; }
+    private int rocksWanted { get; set; }
+    private int grassWanted { get; set; }
+    private int foodWanted { get; set; }
+    private int totalWanted { get; set; }
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         buildingUI = GameObject.Find("Building UI").GetComponent<BuildingUI>();
         animator = GetComponentInChildren<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         gameManager = GameObject.Find("Focal Point").GetComponent<GameManager>();
-        updateTextCounter = GameObject.FindWithTag("Counter").GetComponent<UpdateTextCounter>();
+        keeper = GameObject.Find("Keeper").GetComponent<Keeper>();
 
         // pick a random direction to walk in
         navMeshAgent.destination = new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 0.0f));
     }
 
-    private void Walk()
+    public virtual void Walk()
     {
         // while animal is not at destination, use walking animation
         if (Mathf.Abs(transform.position.x - navMeshAgent.destination.x) > 0.9f && Mathf.Abs(transform.position.z - navMeshAgent.destination.z) > 0.9f)
@@ -83,31 +86,62 @@ public class Animal : MonoBehaviour
         Debug.Log("New Destination: " +  destination);
     }
 
-    public void CheckAnimalHappiness()
+    public virtual void CheckAnimalHappiness()
     {
-        
-        if (updateTextCounter.treesMet && updateTextCounter.rocksMet && updateTextCounter.grassesMet && updateTextCounter.mushroomsMet)
+        animalHappiness = 0.0f;
+
+        float perItemValue = 1.0f / (float)totalWanted;
+
+        // check tree need
+        if (treesWanted != 0 && keeper.treesCurrent > 0)
         {
-            if (animator != null)
+            if (treesWanted <= keeper.treesCurrent)
             {
-                animator.SetBool("isHappy", true);
-                gameWon = true;
-                gameManager.GameOver();
-                Debug.Log("Game Over");
+                animalHappiness += perItemValue; // add the per item value
             }
-        } else if (animalHappiness <= 0)
-        {
-            if (animator != null)
+            else if (treesWanted > keeper.treesCurrent)
             {
-                animator.SetBool("isSad", true);
-                gameLost = true;
-                gameManager.GameOver();
+                animalHappiness -= perItemValue;
             }
         }
-        else
+
+        // check rock need
+        if (rocksWanted != 0 && keeper.rocksCurrent > 0)
         {
-            animator.SetBool("isHappy", false);
-            animator.SetBool("isSad", false);
+            if (rocksWanted <= keeper.rocksCurrent)
+            {
+                animalHappiness += perItemValue; // add the per item value
+            }
+            else if (rocksWanted > keeper.rocksCurrent)
+            {
+                animalHappiness -= perItemValue;
+            }
+        }
+
+        // check grass need
+        if (grassWanted != 0 && keeper.grassesCurrent > 0)
+        {
+            if (grassWanted <= keeper.grassesCurrent)
+            {
+                animalHappiness += perItemValue; // add the per item value
+            }
+            else if (grassWanted > keeper.grassesCurrent)
+            {
+                animalHappiness -= perItemValue;
+            }
+        }
+
+        // check food need
+        if (foodWanted != 0 && keeper.foodCurrent > 0)
+        {
+            if (foodWanted <= keeper.foodCurrent)
+            {
+                animalHappiness += perItemValue; // add the per item value
+            }
+            else if (foodWanted > keeper.foodCurrent)
+            {
+                animalHappiness -= perItemValue;
+            }
         }
     }
 

@@ -15,11 +15,10 @@ public class BuildingUI : MonoBehaviour
     private BuildingManager buildManagerScript;
     private GameManager gameManager;
     [SerializeField] private int currentIndex = 0;
-    private Animal animal;
 
     public int rockIndex = 0;
     public int grassIndex = 0;
-    public int mushIndex = 0;
+    public int foodIndex = 0;
 
     public bool isBlocked = false;
 
@@ -36,9 +35,6 @@ public class BuildingUI : MonoBehaviour
 
         // get the building manager script
         buildManagerScript = GameObject.Find("Building Manager").GetComponent<BuildingManager>();
-
-        // get the Animal script
-        animal = GameObject.Find("Animal").GetComponent<Animal>();
 
         // get the Game Manager script
         gameManager = GameObject.Find("Focal Point").GetComponent<GameManager>();
@@ -63,10 +59,8 @@ public class BuildingUI : MonoBehaviour
                 {
                     // BuildingManager spawn building
                     buildManagerScript.SpawnItemToBuild(currentIndex, position);
-                    animal.SetNewDestination(position);
                     isPlacing = false;
                     gameManager.gameAudio.PlayOneShot(gameManager.buildSound, 0.7f);
-                    animal.CheckAnimalHappiness();
                 }
             }
             else
@@ -90,7 +84,6 @@ public class BuildingUI : MonoBehaviour
                 // if player clicks mouse
                 if (Input.GetMouseButtonDown(0))
                 {
-                    animal.CheckAnimalHappiness();
                     isBlocked = false;
                     bulldozing = false;
                 }
@@ -142,7 +135,7 @@ public class BuildingUI : MonoBehaviour
 
     void SelectMushroom(int index)
     {
-        previewMesh = buildManagerScript.mushroomList[index].GetComponentInChildren<MeshFilter>().sharedMesh;
+        previewMesh = buildManagerScript.foodList[index].GetComponentInChildren<MeshFilter>().sharedMesh;
     }
 
     void SelectItemToBuild(int index)
@@ -169,8 +162,8 @@ public class BuildingUI : MonoBehaviour
         } else if (index == 4)
         {
             // choose random mushroom prefab
-            mushIndex = Random.Range(0, 3);
-            SelectMushroom(mushIndex);
+            foodIndex = Random.Range(0, 3);
+            SelectMushroom(foodIndex);
         }
     }
 
