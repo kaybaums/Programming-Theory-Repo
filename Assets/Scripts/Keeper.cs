@@ -8,6 +8,7 @@ public class Keeper : MonoBehaviour
     // the purpose of this script is to keep track of the quality of the habitat and report game end scenarios
 
     public Slider qualitySlider;
+    private GameManager gameManager;
 
     private float habitatQuality = 0.4f;
 
@@ -16,138 +17,82 @@ public class Keeper : MonoBehaviour
     public int rocksCurrent { get; private set; }
     public int grassesCurrent { get; private set; }
     public int foodCurrent { get; private set; }
-    public int totalCurrent { get; private set; }
 
     // these variables represent the number of items needed for the habitat to be considered good quality
-    private static int treesNeeded 
-    { 
-        get { return treesNeeded; }
-        set
-        {
-            if (value < 0)
-            {
-                // trees needed cannot be negative
-                value = 0;
-            }
-            else
-            {
-                treesNeeded = value;
-            }
-        }
-    }
-    private static int rocksNeeded 
-    {
-        get { return rocksNeeded; }
-        set
-        {
-            if (value < 0)
-            {
-                // rocks needed cannot be negative
-                value = 0;
-            }
-            else
-            {
-                rocksNeeded = value;
-            }
-        }
-    }
-    private static int grassesNeeded 
-    {
-        get { return grassesNeeded; }
-        set
-        {
-            if (value < 0)
-            {
-                // grasses needed cannot be negative
-                value = 0;
-            }
-            else
-            {
-                grassesNeeded = value;
-            }
-        }
-    }
-    private static int foodNeeded
-    {
-        get { return foodNeeded; }
-        set
-        {
-            if (value < 0)
-            {
-                value = 0;
-            }
-            else
-            {
-                foodNeeded = value;
-            }
-        }
-    }
+    private int treesNeeded = 0;
+    private static int rocksNeeded = 0;
+    private static int grassesNeeded = 0;
+    private static int foodNeeded = 0;
 
     private BuildingUI buildingUI;
 
-    private bool gameWon = false;
-    private bool gameLost = false;
+    public bool gameWon = false;
+    public bool gameLost = false;
 
     // Start is called before the first frame update
     void Start()
     {
         qualitySlider = GameObject.Find("Habitat Quality").GetComponent<Slider>();
         buildingUI = GameObject.Find("Building UI").GetComponent<BuildingUI>();
+        gameManager = GameObject.Find("Focal Point").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (animals !=  null)
-        {
-            CalcHabitatQuality();
-            CheckHabitatQuality();
-        }
 
         qualitySlider.value = habitatQuality;
 
     }
 
-    void CalcHabitatQuality()
+    public void CalcHabitatQuality()
     {
-        float totalHappiness = 0.0f;
+        // instead of happiness calculate needs vs current
+        /* float totalHappiness = 0.0f;
         
         for (int i = 0; i < animals.Length; i++)
         {
-            totalHappiness += animals[i].GetComponent<Animal>().animalHappiness;
+            Animal ani_script = animals[i].GetComponent<Animal>();
+            
+            totalHappiness += ani_script.animalHappiness;
         }
 
-        habitatQuality = totalHappiness / animals.Length;
+        habitatQuality = totalHappiness / animals.Length; */
+
+        float treeRatio = (float)treesCurrent / (float)treesNeeded;
+        float rockRatio = (float)rocksCurrent / (float)rocksNeeded;
+        float grassRatio = (float)grassesCurrent / (float)grassesNeeded;
+        float foodRatio = (float)foodCurrent / (float)foodNeeded;
+
+        habitatQuality = (treeRatio + rockRatio + grassRatio + foodRatio) / 4.0f;
+
     }
 
-    void CheckHabitatQuality()
+    public void CheckHabitatQuality()
     {
         // player wins the game if the habitat quality is above 80%
-        if (habitatQuality > 0.8f)
+        if (habitatQuality >= 0.8f)
         {
             gameWon = true;
-            GameWon();
+            gameManager.GameOver();
 
-        } else if (habitatQuality < 0.15f) // player loses the game if the habitat quality falls below 15%
+        } else  // player loses the game if the habitat quality falls below 15%
         {
-            gameLost = true;
-            GameLost();
+            for (int i = 0; i < animals.Length; i++)
+            {
+                // check if animal happiness falls below %15
+                if (animals[i].GetComponent<Animal>().animalHappiness < 0.15)
+                {
+                    // check if habitat quality is also below %15
+                    if (habitatQuality < 0.15f)
+                    {
+                        gameLost = true;
+                        gameManager.GameOver();
+                        break; // stop loop when game is lost
+                    }
+                }
+            }
         }
-    }
-
-    void GameWon()
-    {
-
-    }
-
-    void GameLost()
-    {
-
-    }
-
-    private void UpdateCurrentTotal()
-    {
-        totalCurrent = treesCurrent + rocksCurrent + grassesCurrent + foodCurrent;
     }
 
     public void UpdateHabitatNeeds(int trees, int rocks, int grass, int food)
@@ -159,97 +104,123 @@ public class Keeper : MonoBehaviour
         foodNeeded += food;
     }
 
-    public void UpdateTreeCount()
+    public void UpdateTreeCount(Vector3 position)
     {
         if (buildingUI.bulldozing && Input.GetMouseButtonDown(0))
         {
             treesCurrent--;
-            UpdateCurrentTotal();
+            
             for (int i = 0; i < animals.Length; i++)
             {
                 //animal check happiness
+                //animal check happiness
+                Animal ani_script = animals[i].GetComponent<Animal>();
+                ani_script.CheckAnimalHappiness();
             }
         }
         else
         {
             treesCurrent++;
-            UpdateCurrentTotal();
+            
             for (int i = 0; i < animals.Length; i++)
             {
                 //animal check happiness
+                //animal check happiness
+                Animal ani_script = animals[i].GetComponent<Animal>();
+                ani_script.CheckAnimalHappiness();
+
                 // update animal destination
+                ani_script.SetNewDestination(position);
             }
         }
         
     }
 
-    public void UpdateRocksCount()
+    public void UpdateRocksCount(Vector3 position)
     {
         if (buildingUI.bulldozing && Input.GetMouseButtonDown(0))
         {
             rocksCurrent--;
-            UpdateCurrentTotal();
+            
             for (int i = 0; i < animals.Length; i++)
             {
                 //animal check happiness
+                Animal ani_script = animals[i].GetComponent<Animal>();
+                ani_script.CheckAnimalHappiness();
             }
         }
         else
         {
             rocksCurrent++;
-            UpdateCurrentTotal();
+            
             for (int i = 0; i < animals.Length; i++)
             {
                 //animal check happiness
+                Animal ani_script = animals[i].GetComponent<Animal>();
+                ani_script.CheckAnimalHappiness();
+
                 // update animal destination
+                ani_script.SetNewDestination(position);
             }
         }
         
     }
 
-    public void UpdateGrassCount()
+    public void UpdateGrassCount(Vector3 position)
     {
         if (buildingUI.bulldozing && Input.GetMouseButtonDown(0))
         {
             grassesCurrent--;
-            UpdateCurrentTotal();
+            
             for (int i = 0; i < animals.Length; i++)
             {
                 //animal check happiness
+                Animal ani_script = animals[i].GetComponent<Animal>();
+                ani_script.CheckAnimalHappiness();
             }
         }
         else
         {
             grassesCurrent++;
-            UpdateCurrentTotal();
+            
             for (int i = 0; i < animals.Length; i++)
             {
                 //animal check happiness
+                Animal ani_script = animals[i].GetComponent<Animal>();
+                ani_script.CheckAnimalHappiness();
+
                 // update animal destination
+                ani_script.SetNewDestination(position);
             }
         }
 
     }
 
-    public void UpdateFoodCount()
+    public void UpdateFoodCount(Vector3 position)
     {
         if (buildingUI.bulldozing && Input.GetMouseButtonDown(0))
         {
             foodCurrent--;
-            UpdateCurrentTotal();
+            
             for (int i = 0; i < animals.Length; i++)
             {
                 //animal check happiness
+                Animal ani_script = animals[i].GetComponent<Animal>();
+                ani_script.CheckAnimalHappiness();
             }
         }
         else
         {
             foodCurrent++;
-            UpdateCurrentTotal();
+            
             for (int i = 0; i < animals.Length; i++)
             {
                 //animal check happiness
+                Animal ani_script = animals[i].GetComponent<Animal>();
+                ani_script.CheckAnimalHappiness();
+
                 // update animal destination
+                ani_script.SetNewDestination(position);
             }
         }
         

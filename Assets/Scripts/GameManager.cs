@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public AudioClip sadSound;
     public AudioClip happySound;
     public AudioClip buildSound;
+    public AudioClip adoptSound;
     public AudioClip errorSound;
 
     public AudioSource gameAudio;
@@ -19,13 +20,13 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverUI;
     public GameObject animalUI;
 
-    // replace with habitatTracker
-    private Animal animalScript;
+    private Keeper keeper;
 
     // Start is called before the first frame update
     void Start()
     {
         gameAudio = GetComponent<AudioSource>();
+        keeper = GameObject.Find("Keeper").GetComponent<Keeper>();
     }
 
     public void GameOver()
@@ -35,10 +36,10 @@ public class GameManager : MonoBehaviour
         buildingUI.gameObject.SetActive(false);
         gameOverUI.gameObject.SetActive(true);
 
-        if (animalScript.gameWon)
+        if (keeper.gameWon)
         {
             gameOverUI.GetComponentInChildren<TextMeshProUGUI>().text = "Play Again?";
-        } else if (animalScript.gameLost)
+        } else if (keeper.gameLost)
         {
             gameOverUI.GetComponentInChildren<TextMeshProUGUI>().text = "Game Over";
         }

@@ -19,14 +19,14 @@ public class Animal : MonoBehaviour
     [SerializeField] private GameObject happyIndicator;
     [SerializeField] private GameObject sadIndicator;
 
-    private int treesWanted {  get; set; }
-    private int rocksWanted { get; set; }
-    private int grassWanted { get; set; }
-    private int foodWanted { get; set; }
-    private int totalWanted { get; set; }
+    public int treesWanted { get; set; }
+    public int rocksWanted { get; set; }
+    public int grassWanted { get; set; }
+    public int foodWanted { get; set; }
+    protected private int totalWanted { get; set; }
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         buildingUI = GameObject.Find("Building UI").GetComponent<BuildingUI>();
         animator = GetComponentInChildren<Animator>();
@@ -36,22 +36,35 @@ public class Animal : MonoBehaviour
 
         // pick a random direction to walk in
         navMeshAgent.destination = new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 0.0f));
+
+        totalWanted = treesWanted + rocksWanted + grassWanted + foodWanted;
+        //Walk();
+        navMeshAgent.speed = 1.5f;
     }
 
-    public virtual void Walk()
+    private void Update()
     {
-        // while animal is not at destination, use walking animation
-        if (Mathf.Abs(transform.position.x - navMeshAgent.destination.x) > 0.9f && Mathf.Abs(transform.position.z - navMeshAgent.destination.z) > 0.9f)
-        {
-            navMeshAgent.speed = 1.5f;
-            animator.SetFloat("ani_speed", navMeshAgent.speed);
-        }
-        else
-        {
-            navMeshAgent.speed = 0.0f;
-            animator.SetFloat("ani_speed", 0);
-        }
+        animator.SetFloat("ani_speed", navMeshAgent.speed);
     }
+
+    /*public virtual void Walk()
+    {
+        if (navMeshAgent.destination != null)
+        {
+            // while animal is not at destination, use walking animation
+            if (Mathf.Abs(transform.position.x - navMeshAgent.destination.x) > 0.9f && Mathf.Abs(transform.position.z - navMeshAgent.destination.z) > 0.9f)
+            {
+                navMeshAgent.speed = 1.5f;
+                animator.SetFloat("ani_speed", navMeshAgent.speed);
+            }
+            else
+            {
+                navMeshAgent.speed = 0.0f;
+                animator.SetFloat("ani_speed", 0);
+            }
+        }
+        
+    }*/
 
     public void LookSad()
     {
@@ -86,63 +99,110 @@ public class Animal : MonoBehaviour
         Debug.Log("New Destination: " +  destination);
     }
 
-    public virtual void CheckAnimalHappiness()
+    private void CheckTrees()
     {
-        animalHappiness = 0.0f;
-
         float perItemValue = 1.0f / (float)totalWanted;
 
-        // check tree need
+        // check tree need, if animal doesn't want trees then it will ignore this
         if (treesWanted != 0 && keeper.treesCurrent > 0)
         {
             if (treesWanted <= keeper.treesCurrent)
             {
                 animalHappiness += perItemValue; // add the per item value
+                LookHappy();
             }
             else if (treesWanted > keeper.treesCurrent)
             {
                 animalHappiness -= perItemValue;
+                LookSad();
             }
         }
+    }
 
-        // check rock need
+    private void CheckRocks()
+    {
+        float perItemValue = 1.0f / (float)totalWanted;
+
+        // check rock need, if animal doesn't want rocks then it will ignore this
         if (rocksWanted != 0 && keeper.rocksCurrent > 0)
         {
             if (rocksWanted <= keeper.rocksCurrent)
             {
                 animalHappiness += perItemValue; // add the per item value
+                LookHappy();
             }
             else if (rocksWanted > keeper.rocksCurrent)
             {
                 animalHappiness -= perItemValue;
+                LookSad();
             }
         }
+    }
 
-        // check grass need
+    private void CheckGrasses()
+    {
+        float perItemValue = 1.0f / (float)totalWanted;
+
+        // check grass need, if animal doesn't want grass then it will ignore this
         if (grassWanted != 0 && keeper.grassesCurrent > 0)
         {
             if (grassWanted <= keeper.grassesCurrent)
             {
                 animalHappiness += perItemValue; // add the per item value
+                LookHappy();
             }
             else if (grassWanted > keeper.grassesCurrent)
             {
                 animalHappiness -= perItemValue;
+                LookSad();
             }
         }
+    }
 
-        // check food need
+    private void CheckFood()
+    {
+        float perItemValue = 1.0f / (float)totalWanted;
+
+        // check food need, if animal doesn't want food then it will ignore this
         if (foodWanted != 0 && keeper.foodCurrent > 0)
         {
             if (foodWanted <= keeper.foodCurrent)
             {
                 animalHappiness += perItemValue; // add the per item value
+                LookHappy();
             }
             else if (foodWanted > keeper.foodCurrent)
             {
                 animalHappiness -= perItemValue;
+                LookSad();
             }
         }
+    }
+
+    public virtual void CheckAnimalHappiness()
+    {
+        animalHappiness = 0.0f;
+
+        CheckTrees();
+        CheckRocks();
+        CheckGrasses();
+        CheckFood();
+
+        Debug.Log(gameObject.name + ": " + animalHappiness);
+
+        if (animalHappiness >= 0.8f)
+        {
+            animator.SetBool("isHappy", true);
+        } else if ( animalHappiness < 0.15f)
+        {
+            animator.SetBool("isSad", true);
+        }
+        else
+        {
+            animator.SetBool("isHappy", false);
+            animator.SetBool("isSad", false);
+        }
+
     }
 
     private void OnCollisionEnter(Collision collision)

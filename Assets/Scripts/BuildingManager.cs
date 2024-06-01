@@ -2,19 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BuildingManager : MonoBehaviour
 {
     // Buildable Game Prefabs are public to communicate with UI script
-    [SerializeField] public GameObject firTree;
-    [SerializeField] public GameObject sakuraTree;
-    [SerializeField] public List<GameObject> rocksList;
-    [SerializeField] public List<GameObject> grassList;
-    [SerializeField] public List<GameObject> foodList;
+    public GameObject firTree;
+    public GameObject sakuraTree;
+    public List<GameObject> rocksList;
+    public List<GameObject> grassList;
+    public List<GameObject> foodList;
+    public GameObject[] animals;
 
     private BuildingUI buildingUI;
     private Keeper keeper;
     private AdoptAnimal adoptAnimal;
+
+    [SerializeField] private GameObject animal0_NM_surface;
+    [SerializeField] private GameObject animal1_NM_surface;
+    [SerializeField] private GameObject animal2_NM_surface;
+
 
     // Start is called before the first frame update
     void Start()
@@ -22,12 +29,7 @@ public class BuildingManager : MonoBehaviour
         buildingUI = GameObject.Find("Building UI").GetComponent<BuildingUI>();
         keeper = GameObject.Find("Keeper").GetComponent <Keeper>();
         adoptAnimal = GameObject.Find("Animal UI").GetComponent<AdoptAnimal>();
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void SpawnItemToBuild(int index, Vector3 position)
@@ -37,34 +39,75 @@ public class BuildingManager : MonoBehaviour
         if (index == 0)
         {
             Instantiate(firTree, position, Quaternion.identity);
-            keeper.UpdateTreeCount();
+            keeper.UpdateTreeCount(position);
+            keeper.CalcHabitatQuality();
+            keeper.CheckHabitatQuality();
         }
         else if (index == 1)
         {
             Instantiate(sakuraTree, position, Quaternion.identity);
-            keeper.UpdateTreeCount();
+            keeper.UpdateTreeCount(position);
+            keeper.CalcHabitatQuality();
+            keeper.CheckHabitatQuality();
         }
         else if (index == 2)
         {
             Instantiate(rocksList[buildingUI.rockIndex], position, Quaternion.identity);
-            keeper.UpdateRocksCount();
+            keeper.UpdateRocksCount(position);
+            keeper.CalcHabitatQuality();
+            keeper.CheckHabitatQuality();
         }
         else if (index == 3)
         {
             Instantiate(grassList[buildingUI.grassIndex], position, Quaternion.identity);
-            keeper.UpdateGrassCount();
+            keeper.UpdateGrassCount(position);
+            keeper.CalcHabitatQuality();
+            keeper.CheckHabitatQuality();
         }
         else if (index == 4)
         {
             Instantiate(foodList[buildingUI.foodIndex], position, Quaternion.identity);
-            keeper.UpdateFoodCount();
+            keeper.UpdateFoodCount(position);
+            keeper.CalcHabitatQuality();
+            keeper.CheckHabitatQuality();
         }
-        
+
+        UpdateWalkableSurfaces();
+    }
+
+    private void UpdateWalkableSurfaces()
+    {
+        animal0_NM_surface.GetComponent<UpdateNavMeshSurface>().UpdateWalkableEnvironment();
+        animal1_NM_surface.GetComponent<UpdateNavMeshSurface>().UpdateWalkableEnvironment();
+        animal2_NM_surface.GetComponent<UpdateNavMeshSurface>().UpdateWalkableEnvironment();
     }
 
     public void SpawnAdoptedAnimal(int index, Vector3 position)
     {
-
+        if (index == 0)
+        {
+            Instantiate(animals[index], position, Quaternion.identity);
+            Animal ani_script = animals[index].GetComponent<Animal>();
+            keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
+            keeper.CalcHabitatQuality();
+            keeper.CheckHabitatQuality();
+        }
+        else if (index == 1)
+        {
+            Instantiate(animals[index], position, Quaternion.identity);
+            Animal ani_script = animals[index].GetComponent<Animal>();
+            keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
+            keeper.CalcHabitatQuality();
+            keeper.CheckHabitatQuality();
+        }
+        else if (index == 2)
+        {
+            Instantiate(animals[index], position, Quaternion.identity);
+            Animal ani_script = animals[index].GetComponent<Animal>();
+            keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
+            keeper.CalcHabitatQuality();
+            keeper.CheckHabitatQuality();
+        }
     }
 
 }

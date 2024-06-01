@@ -14,10 +14,10 @@ public class UpdateNavMeshSurface : MonoBehaviour
         m_Surface = GetComponent<NavMeshSurface>();
     }
 
-    void OnEnable()
+    /*void OnEnable()
     {
         m_Surface.BuildNavMesh();
-    }
+    }*/
 
     public void UpdateWalkableEnvironment()
     {

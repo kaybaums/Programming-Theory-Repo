@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Mushroom
   - Animal
   - Item
   - Tree
@@ -13,6 +12,7 @@ TagManager:
   - Counter
   - Ground
   - Water
+  - Food
   layers:
   - Default
   - TransparentFX

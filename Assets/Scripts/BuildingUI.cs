@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class BuildingUI : MonoBehaviour
 {
-    [SerializeField] private bool isPlacing = false;
+    private bool isPlacing = false;
     public bool bulldozing = false;
 
-    Mesh previewMesh;
-    [SerializeField] Material previewMaterial;
-    [SerializeField] Material blockedMaterial;
+    private Mesh previewMesh;
+    [SerializeField] private Material previewMaterial;
+    [SerializeField] private Material blockedMaterial;
 
     private BuildingManager buildManagerScript;
     private GameManager gameManager;
@@ -167,7 +167,7 @@ public class BuildingUI : MonoBehaviour
         }
     }
 
-    public void DestroyHighlightedItem()
+    public void StartBulldozing()
     {
         gameManager.gameAudio.PlayOneShot(gameManager.buttonSound, 1.0f);
         bulldozing = true;

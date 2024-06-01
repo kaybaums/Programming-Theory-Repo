@@ -5,7 +5,7 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     private BuildingUI buildingUI;
-    private UpdateTextCounter updateTextCounter;
+    private Keeper keeper;
 
     [SerializeField] Material highlightMaterial;
     private Material originalMaterial;
@@ -15,7 +15,7 @@ public class Item : MonoBehaviour
     {
         buildingUI = GameObject.Find("Building UI").GetComponent<BuildingUI>();
         originalMaterial = gameObject.GetComponent<MeshRenderer>().material;
-        updateTextCounter = GameObject.FindWithTag("Counter").GetComponent<UpdateTextCounter>();
+        keeper = GameObject.Find("Keeper").GetComponent<Keeper>();
     }
 
     private void OnMouseEnter()
@@ -39,19 +39,19 @@ public class Item : MonoBehaviour
         {
             if (gameObject.CompareTag("Tree"))
             {
-                updateTextCounter.UpdateTreeCount();
+                keeper.UpdateTreeCount(gameObject.transform.position);
             }
             else if (gameObject.CompareTag("Rock"))
             {
-                updateTextCounter.UpdateRocksCount();
+                keeper.UpdateRocksCount(gameObject.transform.position);
             }
             else if (gameObject.CompareTag("Grass"))
             {
-                updateTextCounter.UpdateGrassCount();
+                keeper.UpdateGrassCount(gameObject.transform.position);
             }
-            else if (gameObject.CompareTag("Mushroom"))
+            else if (gameObject.CompareTag("Food"))
             {
-                updateTextCounter.UpdateMushroomCount();
+                keeper.UpdateFoodCount(gameObject.transform.position);
             }
             buildingUI.bulldozing = false;
             buildingUI.isBlocked = false;
