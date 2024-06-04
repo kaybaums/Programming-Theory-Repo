@@ -18,10 +18,6 @@ public class BuildingManager : MonoBehaviour
     private Keeper keeper;
     private AdoptAnimal adoptAnimal;
 
-    [SerializeField] private GameObject animal0_NM_surface;
-    [SerializeField] private GameObject animal1_NM_surface;
-    [SerializeField] private GameObject animal2_NM_surface;
-
 
     // Start is called before the first frame update
     void Start()
@@ -72,23 +68,17 @@ public class BuildingManager : MonoBehaviour
             keeper.CheckHabitatQuality();
         }
 
-        UpdateWalkableSurfaces();
-    }
-
-    private void UpdateWalkableSurfaces()
-    {
-        animal0_NM_surface.GetComponent<UpdateNavMeshSurface>().UpdateWalkableEnvironment();
-        animal1_NM_surface.GetComponent<UpdateNavMeshSurface>().UpdateWalkableEnvironment();
-        animal2_NM_surface.GetComponent<UpdateNavMeshSurface>().UpdateWalkableEnvironment();
+        gameObject.GetComponent<UpdateNavMeshSurface>().UpdateWalkableEnvironment();
     }
 
     public void SpawnAdoptedAnimal(int index, Vector3 position)
     {
         if (index == 0)
         {
-            Instantiate(animals[index], position, Quaternion.identity);
-            Animal ani_script = animals[index].GetComponent<Animal>();
-            keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
+            GameObject adoptedAnimal = Instantiate(animals[index], position, Quaternion.identity);
+            Deer ani_script = adoptedAnimal.GetComponent<Deer>();
+            keeper.animals.Add(adoptedAnimal);
+            keeper.UpdateHabitatNeeds(ani_script.trees, ani_script.rocks, ani_script.grass, ani_script.food);
             keeper.CalcHabitatQuality();
             keeper.CheckHabitatQuality();
         }
@@ -96,7 +86,7 @@ public class BuildingManager : MonoBehaviour
         {
             Instantiate(animals[index], position, Quaternion.identity);
             Animal ani_script = animals[index].GetComponent<Animal>();
-            keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
+            //keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
             keeper.CalcHabitatQuality();
             keeper.CheckHabitatQuality();
         }
@@ -104,10 +94,11 @@ public class BuildingManager : MonoBehaviour
         {
             Instantiate(animals[index], position, Quaternion.identity);
             Animal ani_script = animals[index].GetComponent<Animal>();
-            keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
+            //keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
             keeper.CalcHabitatQuality();
             keeper.CheckHabitatQuality();
         }
+
     }
 
 }

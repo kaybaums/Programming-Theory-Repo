@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 894245420651234201}
   - component: {fileID: 9175276677703816353}
   - component: {fileID: 6426331729748564255}
+  - component: {fileID: -7002137654751599268}
   m_Layer: 0
   m_Name: Animal_Monkey
   m_TagString: Item
@@ -116,7 +117,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4452772295624634255}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: 1479372276
   m_Radius: 0.5
   m_Speed: 2
   m_Acceleration: 4
@@ -137,15 +138,31 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4452772295624634255}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c53f9ac0619eb4d45aeca41995da3c79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animalHappiness: 0.2
+  highlightMaterial: {fileID: 0}
   happyIndicator: {fileID: 6353043713106349481, guid: fc8c494db216eb441820639e09aca8e6, type: 3}
   sadIndicator: {fileID: 5010241936747498121, guid: 87307a37695afbb41866ab84bb749bb2, type: 3}
-  gameWon: 0
-  gameLost: 0
+--- !u!114 &-7002137654751599268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4452772295624634255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac37d5a8377f2d4c86d5aa1216645fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animalHappiness: 0.2
+  highlightMaterial: {fileID: 2100000, guid: d70025ddd785da2449362c92a7b85483, type: 2}
+  happyIndicator: {fileID: 6353043713106349481, guid: fc8c494db216eb441820639e09aca8e6, type: 3}
+  sadIndicator: {fileID: 5010241936747498121, guid: 87307a37695afbb41866ab84bb749bb2, type: 3}
 --- !u!1001 &3383134087047857316
 PrefabInstance:
   m_ObjectHideFlags: 0

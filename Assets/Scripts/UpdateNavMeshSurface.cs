@@ -7,21 +7,16 @@ using UnityEngine.AI;
 public class UpdateNavMeshSurface : MonoBehaviour
 {
 
-    NavMeshSurface m_Surface;
+    [SerializeField] private NavMeshSurface deer_Surface;
+    [SerializeField] private NavMeshSurface monkey_Surface;
+    [SerializeField] private NavMeshSurface sparrow_Surface;
 
-    void Awake()
-    {
-        m_Surface = GetComponent<NavMeshSurface>();
-    }
-
-    /*void OnEnable()
-    {
-        m_Surface.BuildNavMesh();
-    }*/
 
     public void UpdateWalkableEnvironment()
     {
-        m_Surface.UpdateNavMesh(m_Surface.navMeshData);
+        deer_Surface.BuildNavMesh();
+        monkey_Surface.BuildNavMesh();
+        sparrow_Surface.BuildNavMesh();
     }
 
 }

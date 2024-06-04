@@ -12,7 +12,7 @@ public class Keeper : MonoBehaviour
 
     private float habitatQuality = 0.4f;
 
-    public GameObject[] animals;
+    public List<GameObject> animals;
     public int treesCurrent { get; private set; }
     public int rocksCurrent { get; private set; }
     public int grassesCurrent { get; private set; }
@@ -20,9 +20,9 @@ public class Keeper : MonoBehaviour
 
     // these variables represent the number of items needed for the habitat to be considered good quality
     private int treesNeeded = 0;
-    private static int rocksNeeded = 0;
-    private static int grassesNeeded = 0;
-    private static int foodNeeded = 0;
+    private int rocksNeeded = 0;
+    private int grassesNeeded = 0;
+    private int foodNeeded = 0;
 
     private BuildingUI buildingUI;
 
@@ -78,7 +78,7 @@ public class Keeper : MonoBehaviour
 
         } else  // player loses the game if the habitat quality falls below 15%
         {
-            for (int i = 0; i < animals.Length; i++)
+            for (int i = 0; i < animals.Count; i++)
             {
                 // check if animal happiness falls below %15
                 if (animals[i].GetComponent<Animal>().animalHappiness < 0.15)
@@ -102,6 +102,11 @@ public class Keeper : MonoBehaviour
         rocksNeeded += rocks;
         grassesNeeded += grass;
         foodNeeded += food;
+
+        Debug.Log("trees: " +  treesNeeded);
+        Debug.Log("rocks: " + rocksNeeded);
+        Debug.Log("grass: " + grassesNeeded);
+        Debug.Log("food: " + foodNeeded);
     }
 
     public void UpdateTreeCount(Vector3 position)
@@ -110,7 +115,7 @@ public class Keeper : MonoBehaviour
         {
             treesCurrent--;
             
-            for (int i = 0; i < animals.Length; i++)
+            for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
                 //animal check happiness
@@ -122,13 +127,13 @@ public class Keeper : MonoBehaviour
         {
             treesCurrent++;
             
-            for (int i = 0; i < animals.Length; i++)
+            for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
                 //animal check happiness
                 Animal ani_script = animals[i].GetComponent<Animal>();
                 ani_script.CheckAnimalHappiness();
-
+                Debug.Log("Checking animal happiness");
                 // update animal destination
                 ani_script.SetNewDestination(position);
             }
@@ -142,7 +147,7 @@ public class Keeper : MonoBehaviour
         {
             rocksCurrent--;
             
-            for (int i = 0; i < animals.Length; i++)
+            for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
                 Animal ani_script = animals[i].GetComponent<Animal>();
@@ -153,7 +158,7 @@ public class Keeper : MonoBehaviour
         {
             rocksCurrent++;
             
-            for (int i = 0; i < animals.Length; i++)
+            for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
                 Animal ani_script = animals[i].GetComponent<Animal>();
@@ -172,7 +177,7 @@ public class Keeper : MonoBehaviour
         {
             grassesCurrent--;
             
-            for (int i = 0; i < animals.Length; i++)
+            for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
                 Animal ani_script = animals[i].GetComponent<Animal>();
@@ -183,7 +188,7 @@ public class Keeper : MonoBehaviour
         {
             grassesCurrent++;
             
-            for (int i = 0; i < animals.Length; i++)
+            for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
                 Animal ani_script = animals[i].GetComponent<Animal>();
@@ -202,7 +207,7 @@ public class Keeper : MonoBehaviour
         {
             foodCurrent--;
             
-            for (int i = 0; i < animals.Length; i++)
+            for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
                 Animal ani_script = animals[i].GetComponent<Animal>();
@@ -213,7 +218,7 @@ public class Keeper : MonoBehaviour
         {
             foodCurrent++;
             
-            for (int i = 0; i < animals.Length; i++)
+            for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
                 Animal ani_script = animals[i].GetComponent<Animal>();

@@ -10,8 +10,11 @@ public class Animal : MonoBehaviour
     public float animalHappiness = 0.2f;
 
     private BuildingUI buildingUI;
-    private Animator animator;
+    protected Animator animator;
     private Keeper keeper;
+
+    [SerializeField] Material highlightMaterial;
+    private Material originalMaterial;
 
     private NavMeshAgent navMeshAgent;
     private GameManager gameManager;
@@ -19,16 +22,17 @@ public class Animal : MonoBehaviour
     [SerializeField] private GameObject happyIndicator;
     [SerializeField] private GameObject sadIndicator;
 
-    public int treesWanted { get; set; }
-    public int rocksWanted { get; set; }
-    public int grassWanted { get; set; }
-    public int foodWanted { get; set; }
-    protected private int totalWanted { get; set; }
+    protected int treesWanted;
+    protected int rocksWanted;
+    protected int grassWanted;
+    protected int foodWanted;
+    protected private int totalWanted;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         buildingUI = GameObject.Find("Building UI").GetComponent<BuildingUI>();
+
         animator = GetComponentInChildren<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         gameManager = GameObject.Find("Focal Point").GetComponent<GameManager>();
@@ -37,19 +41,24 @@ public class Animal : MonoBehaviour
         // pick a random direction to walk in
         navMeshAgent.destination = new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 0.0f));
 
-        totalWanted = treesWanted + rocksWanted + grassWanted + foodWanted;
+        
         //Walk();
         navMeshAgent.speed = 1.5f;
+
+        /*treesWanted = 1;
+        rocksWanted = 1;
+        grassWanted = 1;
+        foodWanted = 1;*/
     }
 
     private void Update()
     {
-        animator.SetFloat("ani_speed", navMeshAgent.speed);
+        //animator.SetFloat("ani_speed", navMeshAgent.speed);
     }
 
-    /*public virtual void Walk()
+    public void Walk()
     {
-        if (navMeshAgent.destination != null)
+        if (navMeshAgent != null)
         {
             // while animal is not at destination, use walking animation
             if (Mathf.Abs(transform.position.x - navMeshAgent.destination.x) > 0.9f && Mathf.Abs(transform.position.z - navMeshAgent.destination.z) > 0.9f)
@@ -64,7 +73,7 @@ public class Animal : MonoBehaviour
             }
         }
         
-    }*/
+    }
 
     public void LookSad()
     {
@@ -102,6 +111,7 @@ public class Animal : MonoBehaviour
     private void CheckTrees()
     {
         float perItemValue = 1.0f / (float)totalWanted;
+        Debug.Log("per item: " + perItemValue);
 
         // check tree need, if animal doesn't want trees then it will ignore this
         if (treesWanted != 0 && keeper.treesCurrent > 0)
@@ -216,12 +226,28 @@ public class Animal : MonoBehaviour
         }
     }
 
-    private void OnMouseOver()
+    private void OnMouseEnter()
     {
         buildingUI.isBlocked = true;
+        if (buildingUI.bulldozing)
+        {
+            gameObject.GetComponent<MeshRenderer>().material = highlightMaterial;
+        }
     }
     private void OnMouseExit()
     {
         buildingUI.isBlocked = false;
+        gameObject.GetComponent<MeshRenderer>().material = originalMaterial;
+    }
+
+    private void OnMouseDown()
+    {
+        if (buildingUI.bulldozing)
+        {
+            keeper.UpdateHabitatNeeds(-treesWanted, -rocksWanted, -grassWanted, -foodWanted);
+            buildingUI.bulldozing = false;
+            buildingUI.isBlocked = false;
+            Destroy(gameObject);
+        }
     }
 }

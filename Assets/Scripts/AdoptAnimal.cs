@@ -125,11 +125,11 @@ public class AdoptAnimal : MonoBehaviour
         }
         else if (index == 1)
         {
-            previewMesh = buildManagerScript.animals[index].GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh;
+            previewMesh = buildManagerScript.animals[index].GetComponentInChildren<MeshFilter>().sharedMesh;
         }
         else if (index == 2)
         {
-            previewMesh = buildManagerScript.animals[index].GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh;
+            previewMesh = buildManagerScript.animals[index].GetComponentInChildren<MeshFilter>().sharedMesh;
         }
     }
 

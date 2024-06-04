@@ -5,19 +5,36 @@ using UnityEngine.AI;
 
 public class Deer : Animal
 {
+    public int trees;
+    public int rocks;
+    public int grass;
+    public int food;
 
-    void Start()
+
+    void Awake()
     {
-        treesWanted = Random.Range(1, 7);
-        grassWanted = Random.Range(1, 12);
-        foodWanted = Random.Range(1, 10);
-        rocksWanted = 0;
+        trees = Random.Range(1, 7);
+        grass = Random.Range(1, 7);
+        food = Random.Range(1, 7);
+        rocks = 0;
+
+        Debug.Log(trees);
+
+        treesWanted = trees;
+        rocksWanted = rocks;
+        grassWanted = grass;
+        foodWanted = food;
+
+        totalWanted = treesWanted + rocksWanted + grassWanted + foodWanted;
+        Debug.Log("total " + totalWanted);
+
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Walk();
+        Walk();
     }
 
 }

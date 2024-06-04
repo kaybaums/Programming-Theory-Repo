@@ -126,7 +126,7 @@ MonoBehaviour:
   m_GenerateLinks: 0
   m_IgnoreFromBuild: 1
   m_ApplyToChildren: 1
-  m_AffectedAgents: 00000000
+  m_AffectedAgents: ffffffff
 --- !u!114 &-3835256712489981497
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ public class BuildingUI : MonoBehaviour
 
     private BuildingManager buildManagerScript;
     private GameManager gameManager;
+    private Keeper keeper;
     [SerializeField] private int currentIndex = 0;
 
     public int rockIndex = 0;
@@ -39,7 +40,10 @@ public class BuildingUI : MonoBehaviour
         // get the Game Manager script
         gameManager = GameObject.Find("Focal Point").GetComponent<GameManager>();
 
-    }
+        // get the Keeper script
+        keeper = GameObject.Find("Keeper").GetComponent<Keeper>();
+        isBlocked = false;
+}
 
     // Update is called once per frame
     void Update()
@@ -84,6 +88,8 @@ public class BuildingUI : MonoBehaviour
                 // if player clicks mouse
                 if (Input.GetMouseButtonDown(0))
                 {
+                    keeper.CalcHabitatQuality();
+                    keeper.CheckHabitatQuality();
                     isBlocked = false;
                     bulldozing = false;
                 }
@@ -173,5 +179,8 @@ public class BuildingUI : MonoBehaviour
         bulldozing = true;
     }
 
-
+    public void CheckPlacement(bool blockedFlag)
+    {
+        isBlocked = blockedFlag;
+    }
 }
