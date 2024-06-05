@@ -4,12 +4,29 @@ using UnityEngine;
 
 public class Sparrow : Animal
 {
-    void Start()
+    private int trees;
+    private int rocks;
+    private int grass;
+    private int food;
+
+    void Awake()
     {
-        treesWanted = Random.Range(1, 6);
-        grassWanted = Random.Range(3, 10);
-        foodWanted = Random.Range(1, 6);
-        rocksWanted = Random.Range(1, 3);
+        trees = Random.Range(1, 6);
+        grass = Random.Range(3, 10);
+        food = Random.Range(1, 6);
+        rocks = Random.Range(1, 3);
+
+        treesWanted = trees;
+        rocksWanted = rocks;
+        grassWanted = grass;
+        foodWanted = food;
+
+        totalWanted = treesWanted + rocksWanted + grassWanted + foodWanted;
+        Debug.Log("total " + totalWanted);
+
+        SetVariables();
+
+        animalHappiness = 0.2f;
     }
 
     // Update is called once per frame

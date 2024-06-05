@@ -76,27 +76,26 @@ public class BuildingManager : MonoBehaviour
         if (index == 0)
         {
             GameObject adoptedAnimal = Instantiate(animals[index], position, Quaternion.identity);
-            Deer ani_script = adoptedAnimal.GetComponent<Deer>();
+            Animal ani_script = adoptedAnimal.GetComponent<Animal>();
             keeper.animals.Add(adoptedAnimal);
-            keeper.UpdateHabitatNeeds(ani_script.trees, ani_script.rocks, ani_script.grass, ani_script.food);
+            keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
             keeper.CalcHabitatQuality();
-            keeper.CheckHabitatQuality();
         }
         else if (index == 1)
         {
-            Instantiate(animals[index], position, Quaternion.identity);
+            GameObject adoptedAnimal = Instantiate(animals[index], position, Quaternion.identity);
             Animal ani_script = animals[index].GetComponent<Animal>();
-            //keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
+            keeper.animals.Add(adoptedAnimal);
+            keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
             keeper.CalcHabitatQuality();
-            keeper.CheckHabitatQuality();
         }
         else if (index == 2)
         {
-            Instantiate(animals[index], position, Quaternion.identity);
+            GameObject adoptedAnimal = Instantiate(animals[index], position, Quaternion.identity);
             Animal ani_script = animals[index].GetComponent<Animal>();
-            //keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
+            keeper.animals.Add(adoptedAnimal);
+            keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
             keeper.CalcHabitatQuality();
-            keeper.CheckHabitatQuality();
         }
 
     }

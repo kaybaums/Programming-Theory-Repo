@@ -10,8 +10,7 @@ public class Item : MonoBehaviour
     [SerializeField] Material highlightMaterial;
     private Material originalMaterial;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         buildingUI = GameObject.Find("Building UI").GetComponent<BuildingUI>();
         originalMaterial = gameObject.GetComponent<MeshRenderer>().material;
@@ -55,6 +54,8 @@ public class Item : MonoBehaviour
             }
             buildingUI.bulldozing = false;
             buildingUI.isBlocked = false;
+            keeper.CalcHabitatQuality();
+            keeper.CheckHabitatQuality();
             Destroy(gameObject);
         }
     }

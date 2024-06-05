@@ -1,15 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Deer : Animal
 {
-    public int trees;
-    public int rocks;
-    public int grass;
-    public int food;
-
+    private int trees;
+    private int rocks;
+    private int grass;
+    private int food;
 
     void Awake()
     {
@@ -17,8 +15,6 @@ public class Deer : Animal
         grass = Random.Range(1, 7);
         food = Random.Range(1, 7);
         rocks = 0;
-
-        Debug.Log(trees);
 
         treesWanted = trees;
         rocksWanted = rocks;
@@ -28,7 +24,9 @@ public class Deer : Animal
         totalWanted = treesWanted + rocksWanted + grassWanted + foodWanted;
         Debug.Log("total " + totalWanted);
 
-        animator = GetComponentInChildren<Animator>();
+        SetVariables();
+
+        animalHappiness = 0.3f;
     }
 
     // Update is called once per frame
@@ -36,5 +34,7 @@ public class Deer : Animal
     {
         Walk();
     }
+
+
 
 }

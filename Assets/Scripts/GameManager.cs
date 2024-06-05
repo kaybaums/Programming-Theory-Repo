@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public GameObject buildingManager;
     public GameObject gameOverUI;
     public GameObject animalUI;
+    public GameObject backToMenuButton;
 
     private Keeper keeper;
 
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviour
         // set animal UI false
         animalUI.gameObject.SetActive(false);
         buildingUI.gameObject.SetActive(false);
+        backToMenuButton.gameObject.SetActive(false);
         gameOverUI.gameObject.SetActive(true);
 
         if (keeper.gameWon)
@@ -47,6 +49,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        gameAudio.PlayOneShot(buttonSound, 1.0f);
         SceneManager.LoadScene(0);
     }
 }

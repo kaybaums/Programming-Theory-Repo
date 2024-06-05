@@ -7,29 +7,34 @@ using TMPro;
 
 public class Animal : MonoBehaviour
 {
-    public float animalHappiness = 0.2f;
+    public float animalHappiness = 0.0f;
 
-    private BuildingUI buildingUI;
+    protected BuildingUI buildingUI;
     protected Animator animator;
-    private Keeper keeper;
+    protected Keeper keeper; 
+    protected GameManager gameManager;
 
     [SerializeField] Material highlightMaterial;
     private Material originalMaterial;
 
     private NavMeshAgent navMeshAgent;
-    private GameManager gameManager;
 
     [SerializeField] private GameObject happyIndicator;
     [SerializeField] private GameObject sadIndicator;
 
-    protected int treesWanted;
-    protected int rocksWanted;
-    protected int grassWanted;
-    protected int foodWanted;
+    public int treesWanted;
+    public int rocksWanted;
+    public int grassWanted;
+    public int foodWanted;
     protected private int totalWanted;
 
     // Start is called before the first frame update
     void Awake()
+    {
+        SetVariables();
+    }
+
+    public void SetVariables()
     {
         buildingUI = GameObject.Find("Building UI").GetComponent<BuildingUI>();
 
@@ -38,38 +43,40 @@ public class Animal : MonoBehaviour
         gameManager = GameObject.Find("Focal Point").GetComponent<GameManager>();
         keeper = GameObject.Find("Keeper").GetComponent<Keeper>();
 
+
         // pick a random direction to walk in
         navMeshAgent.destination = new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 0.0f));
-
-        
-        //Walk();
         navMeshAgent.speed = 1.5f;
-
-        /*treesWanted = 1;
-        rocksWanted = 1;
-        grassWanted = 1;
-        foodWanted = 1;*/
-    }
-
-    private void Update()
-    {
-        //animator.SetFloat("ani_speed", navMeshAgent.speed);
     }
 
     public void Walk()
     {
         if (navMeshAgent != null)
         {
-            // while animal is not at destination, use walking animation
-            if (Mathf.Abs(transform.position.x - navMeshAgent.destination.x) > 0.9f && Mathf.Abs(transform.position.z - navMeshAgent.destination.z) > 0.9f)
-            {
-                navMeshAgent.speed = 1.5f;
-                animator.SetFloat("ani_speed", navMeshAgent.speed);
-            }
-            else
+            // check if animal is happy or is sad because we don't want a moving spinning animal or dead animal
+            if (animator.GetBool("isHappy"))
             {
                 navMeshAgent.speed = 0.0f;
                 animator.SetFloat("ani_speed", 0);
+            }
+            else if (animator.GetBool("isSad"))
+            {
+                navMeshAgent.speed = 0.0f;
+                animator.SetFloat("ani_speed", 0);
+            }
+            else
+            {
+                // while animal is not at destination, use walking animation
+                if (Mathf.Abs(transform.position.x - navMeshAgent.destination.x) > 0.9f && Mathf.Abs(transform.position.z - navMeshAgent.destination.z) > 0.9f)
+                {
+                    navMeshAgent.speed = 1.5f;
+                    animator.SetFloat("ani_speed", navMeshAgent.speed);
+                }
+                else
+                {
+                    navMeshAgent.speed = 0.0f;
+                    animator.SetFloat("ani_speed", 0);
+                }
             }
         }
         
@@ -77,51 +84,36 @@ public class Animal : MonoBehaviour
 
     public void LookSad()
     {
-        /* if (animator != null)
-        {
-            animator.Play("Eyes_Cry", 1);
-            animator.Play("Bounce", 0);
-        }*/
         animator.SetTrigger("makeSad");
         gameManager.gameAudio.PlayOneShot(gameManager.sadSound, 0.6f);
         Instantiate(sadIndicator, new Vector3(transform.position.x, 3.0f, transform.position.z), Quaternion.identity);
-        animalHappiness--;
-        CheckAnimalHappiness();
     }
 
     public void LookHappy()
     {
-        /*if (animator != null)
-        {
-            animator.Play("Eyes_Happy", 1);
-            animator.Play()
-        }*/
         animator.SetTrigger("makeHappy");
         gameManager.gameAudio.PlayOneShot(gameManager.happySound, 0.3f);
         Instantiate(happyIndicator, new Vector3(transform.position.x, 3.0f, transform.position.z), Quaternion.identity);
-        CheckAnimalHappiness();
     }
 
     public void SetNewDestination(Vector3 destination)
     {
         navMeshAgent.destination = destination;
-        Debug.Log("New Destination: " +  destination);
     }
 
     private void CheckTrees()
     {
         float perItemValue = 1.0f / (float)totalWanted;
-        Debug.Log("per item: " + perItemValue);
 
         // check tree need, if animal doesn't want trees then it will ignore this
         if (treesWanted != 0 && keeper.treesCurrent > 0)
-        {
-            if (treesWanted <= keeper.treesCurrent)
+        { 
+            if (treesWanted >= keeper.treesCurrent)
             {
                 animalHappiness += perItemValue; // add the per item value
                 LookHappy();
             }
-            else if (treesWanted > keeper.treesCurrent)
+            else if (keeper.treesCurrent > treesWanted)
             {
                 animalHappiness -= perItemValue;
                 LookSad();
@@ -136,12 +128,12 @@ public class Animal : MonoBehaviour
         // check rock need, if animal doesn't want rocks then it will ignore this
         if (rocksWanted != 0 && keeper.rocksCurrent > 0)
         {
-            if (rocksWanted <= keeper.rocksCurrent)
+            if (rocksWanted >= keeper.rocksCurrent)
             {
                 animalHappiness += perItemValue; // add the per item value
                 LookHappy();
             }
-            else if (rocksWanted > keeper.rocksCurrent)
+            else if (keeper.rocksCurrent > rocksWanted)
             {
                 animalHappiness -= perItemValue;
                 LookSad();
@@ -156,12 +148,12 @@ public class Animal : MonoBehaviour
         // check grass need, if animal doesn't want grass then it will ignore this
         if (grassWanted != 0 && keeper.grassesCurrent > 0)
         {
-            if (grassWanted <= keeper.grassesCurrent)
+            if (grassWanted >= keeper.grassesCurrent)
             {
                 animalHappiness += perItemValue; // add the per item value
                 LookHappy();
             }
-            else if (grassWanted > keeper.grassesCurrent)
+            else if (keeper.grassesCurrent > grassWanted)
             {
                 animalHappiness -= perItemValue;
                 LookSad();
@@ -176,12 +168,12 @@ public class Animal : MonoBehaviour
         // check food need, if animal doesn't want food then it will ignore this
         if (foodWanted != 0 && keeper.foodCurrent > 0)
         {
-            if (foodWanted <= keeper.foodCurrent)
+            if (foodWanted >= keeper.foodCurrent)
             {
                 animalHappiness += perItemValue; // add the per item value
                 LookHappy();
             }
-            else if (foodWanted > keeper.foodCurrent)
+            else if (keeper.foodCurrent > foodWanted)
             {
                 animalHappiness -= perItemValue;
                 LookSad();
@@ -189,14 +181,21 @@ public class Animal : MonoBehaviour
         }
     }
 
-    public virtual void CheckAnimalHappiness()
+    public void CheckAnimalHappiness(string item)
     {
-        animalHappiness = 0.0f;
-
-        CheckTrees();
-        CheckRocks();
-        CheckGrasses();
-        CheckFood();
+        if (item == "tree")
+        {
+            CheckTrees();
+        } else if (item == "rock")
+        {
+            CheckRocks();
+        } else if (item == "grass")
+        {
+            CheckGrasses();
+        } else if (item == "food")
+        {
+            CheckFood();
+        }
 
         Debug.Log(gameObject.name + ": " + animalHappiness);
 
@@ -247,6 +246,8 @@ public class Animal : MonoBehaviour
             keeper.UpdateHabitatNeeds(-treesWanted, -rocksWanted, -grassWanted, -foodWanted);
             buildingUI.bulldozing = false;
             buildingUI.isBlocked = false;
+            keeper.CalcHabitatQuality();
+            keeper.CheckHabitatQuality();
             Destroy(gameObject);
         }
     }

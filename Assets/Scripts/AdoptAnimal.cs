@@ -37,7 +37,7 @@ public class AdoptAnimal : MonoBehaviour
     {
         // find the UI buttons and assign an index
         Button[] buttons = GetComponentsInChildren<Button>();
-        for (int i = 0; i < buttons.Length - 1; i++)
+        for (int i = 0; i < buttons.Length; i++)
         {
             int index = i;
             buttons[index].onClick.AddListener(() => SelectAnimalToAdopt(index));
