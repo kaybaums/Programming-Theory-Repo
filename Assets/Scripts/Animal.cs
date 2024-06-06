@@ -43,10 +43,15 @@ public class Animal : MonoBehaviour
         gameManager = GameObject.Find("Focal Point").GetComponent<GameManager>();
         keeper = GameObject.Find("Keeper").GetComponent<Keeper>();
 
-
         // pick a random direction to walk in
         navMeshAgent.destination = new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 0.0f));
         navMeshAgent.speed = 1.5f;
+
+        SkinnedMeshRenderer[] modelRenderers = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+        for (int i = 0; i < modelRenderers.Length; i++)
+        {
+            originalMaterial = modelRenderers[i].material;
+        }
     }
 
     public void Walk()
@@ -230,13 +235,24 @@ public class Animal : MonoBehaviour
         buildingUI.isBlocked = true;
         if (buildingUI.bulldozing)
         {
-            gameObject.GetComponent<MeshRenderer>().material = highlightMaterial;
+            SkinnedMeshRenderer[] modelRenderers =  gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+            for (int i = 0; i < modelRenderers.Length; i++)
+            {
+                modelRenderers[i].material = highlightMaterial;
+            }
         }
     }
     private void OnMouseExit()
     {
         buildingUI.isBlocked = false;
-        gameObject.GetComponent<MeshRenderer>().material = originalMaterial;
+        if (buildingUI.bulldozing)
+        {
+            SkinnedMeshRenderer[] modelRenderers = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+            for (int i = 0; i < modelRenderers.Length; i++)
+            {
+                modelRenderers[i].material = originalMaterial;
+            }
+        }
     }
 
     private void OnMouseDown()
