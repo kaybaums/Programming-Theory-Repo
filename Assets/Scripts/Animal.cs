@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
 
-public class Animal : MonoBehaviour
+public abstract class Animal : MonoBehaviour
 {
     public float animalHappiness = 0.0f;
 
@@ -33,6 +33,8 @@ public class Animal : MonoBehaviour
     {
         SetVariables();
     }
+
+    public abstract void DefineWants();
 
     public void SetVariables()
     {
@@ -230,7 +232,7 @@ public class Animal : MonoBehaviour
         }
     }
 
-    private void OnMouseEnter()
+    public void OnMouseEnter()
     {
         buildingUI.isBlocked = true;
         if (buildingUI.bulldozing)
@@ -242,7 +244,7 @@ public class Animal : MonoBehaviour
             }
         }
     }
-    private void OnMouseExit()
+    public void OnMouseExit()
     {
         buildingUI.isBlocked = false;
         if (buildingUI.bulldozing)
@@ -255,7 +257,7 @@ public class Animal : MonoBehaviour
         }
     }
 
-    private void OnMouseDown()
+    public void OnMouseDown()
     {
         if (buildingUI.bulldozing)
         {

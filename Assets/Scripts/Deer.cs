@@ -11,6 +11,17 @@ public class Deer : Animal
 
     void Awake()
     {
+        DefineWants();
+
+        totalWanted = treesWanted + rocksWanted + grassWanted + foodWanted;
+        Debug.Log("total " + totalWanted);
+
+        SetVariables();
+
+        animalHappiness = 0.3f;
+    }
+    public override void DefineWants()
+    {
         trees = Random.Range(1, 7);
         grass = Random.Range(1, 7);
         food = Random.Range(1, 7);
@@ -21,12 +32,7 @@ public class Deer : Animal
         grassWanted = grass;
         foodWanted = food;
 
-        totalWanted = treesWanted + rocksWanted + grassWanted + foodWanted;
-        Debug.Log("total " + totalWanted);
-
-        SetVariables();
-
-        animalHappiness = 0.3f;
+        //throw new System.NotImplementedException();
     }
 
     // Update is called once per frame

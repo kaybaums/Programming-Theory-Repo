@@ -73,7 +73,7 @@ public class Keeper : MonoBehaviour
             treeRatio = 0;
         }
         if (rocksNeeded != 0)
-        {
+        { 
             average++;
             if (rocksCurrent > rocksNeeded)
             {
@@ -127,7 +127,7 @@ public class Keeper : MonoBehaviour
         }
 
         habitatQuality = (treeRatio + rockRatio + grassRatio + foodRatio) / average;
-       
+        Debug.Log(treeRatio + " + " + rockRatio + " + " + grassRatio + " + " + foodRatio + " / " + average + " = " + habitatQuality);
     }
 
     public void CheckHabitatQuality()
@@ -154,6 +154,7 @@ public class Keeper : MonoBehaviour
             // check if animal happiness falls below %15
             if (animals[i].GetComponent<Animal>().animalHappiness < 0.15)
             {
+                Debug.Log(animals[i].GetComponent<Animal>().animalHappiness);
                 check = false;
                 break;
 

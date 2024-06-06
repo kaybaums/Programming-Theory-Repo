@@ -84,7 +84,7 @@ public class BuildingManager : MonoBehaviour
         else if (index == 1)
         {
             GameObject adoptedAnimal = Instantiate(animals[index], position, Quaternion.identity);
-            Animal ani_script = animals[index].GetComponent<Animal>();
+            Animal ani_script = adoptedAnimal.GetComponent<Animal>();
             keeper.animals.Add(adoptedAnimal);
             keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
             keeper.CalcHabitatQuality();
@@ -92,7 +92,7 @@ public class BuildingManager : MonoBehaviour
         else if (index == 2)
         {
             GameObject adoptedAnimal = Instantiate(animals[index], position, Quaternion.identity);
-            Animal ani_script = animals[index].GetComponent<Animal>();
+            Animal ani_script = adoptedAnimal.GetComponent<Animal>();
             keeper.animals.Add(adoptedAnimal);
             keeper.UpdateHabitatNeeds(ani_script.treesWanted, ani_script.rocksWanted, ani_script.grassWanted, ani_script.foodWanted);
             keeper.CalcHabitatQuality();
