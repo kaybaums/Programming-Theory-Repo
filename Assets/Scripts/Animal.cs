@@ -204,7 +204,7 @@ public class Animal : MonoBehaviour
 
         Debug.Log(gameObject.name + ": " + animalHappiness);
 
-        if (animalHappiness >= 0.8f)
+        if (animalHappiness >= 0.85f)
         {
             animator.SetBool("isHappy", true);
         } else if ( animalHappiness < 0.15f)
@@ -262,6 +262,13 @@ public class Animal : MonoBehaviour
             keeper.UpdateHabitatNeeds(-treesWanted, -rocksWanted, -grassWanted, -foodWanted);
             buildingUI.bulldozing = false;
             buildingUI.isBlocked = false;
+            for (int i = 0; i < keeper.animals.Count; i++)
+            {
+                if (keeper.animals[i].name == gameObject.name)
+                {
+                    keeper.animals.RemoveAt(i);
+                }
+            }
             keeper.CalcHabitatQuality();
             keeper.CheckHabitatQuality();
             Destroy(gameObject);

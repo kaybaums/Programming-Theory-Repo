@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
         if (keeper.gameWon)
         {
             gameOverUI.GetComponentInChildren<TextMeshProUGUI>().text = "Play Again?";
-        } else if (keeper.gameLost)
+        } else
         {
             gameOverUI.GetComponentInChildren<TextMeshProUGUI>().text = "Game Over";
         }

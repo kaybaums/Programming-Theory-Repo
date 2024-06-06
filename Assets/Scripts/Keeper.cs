@@ -27,7 +27,6 @@ public class Keeper : MonoBehaviour
     private BuildingUI buildingUI;
 
     public bool gameWon = false;
-    public bool gameLost = false;
 
     // Start is called before the first frame update
     void Start()
@@ -134,30 +133,38 @@ public class Keeper : MonoBehaviour
     public void CheckHabitatQuality()
     {
         // player wins the game if the habitat quality is above 80%
-        if (habitatQuality == 1.0f)
+        if (habitatQuality == 1.0f || CheckAnimals())
         {
             gameWon = true;
             gameManager.GameOver();
 
-        } else if (habitatQuality < 0.1f) 
+        } else if (habitatQuality < 0.1f && CheckAnimals() == false) 
         {
             // player loses the game if habitat quality is poor and animals are unhappy
-            CheckAnimals();
+            gameWon = false;
+            gameManager.GameOver();
         }
     }
 
-    public void CheckAnimals()
+    public bool CheckAnimals()
     {
+        bool check = false;
         for (int i = 0; i < animals.Count; i++)
         {
             // check if animal happiness falls below %15
             if (animals[i].GetComponent<Animal>().animalHappiness < 0.15)
             {
-                gameLost = true;
-                gameManager.GameOver();
-                break; // stop loop when game is lost
+                check = false;
+                break;
+
+            } else if (animals[i].GetComponent<Animal>().animalHappiness > 0.85f)
+            {
+                check = true;
+                break;
             }
+            
         }
+        return check;
     }
 
     public void UpdateHabitatNeeds(int trees, int rocks, int grass, int food)
