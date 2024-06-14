@@ -18,7 +18,7 @@ public class Sparrow : Animal
 
         SetVariables();
 
-        animalHappiness = 0.2f;
+        animalHappiness = 0.1f;
     }
 
     public override void DefineWants()

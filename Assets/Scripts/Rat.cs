@@ -18,7 +18,7 @@ public class Rat : Animal
 
         SetVariables();
 
-        animalHappiness = 0.25f;
+        animalHappiness = 0.15f;
     }
 
     public override void DefineWants()

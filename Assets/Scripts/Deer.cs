@@ -18,7 +18,7 @@ public class Deer : Animal
 
         SetVariables();
 
-        animalHappiness = 0.3f;
+        animalHappiness = 0.15f;
     }
     public override void DefineWants()
     {

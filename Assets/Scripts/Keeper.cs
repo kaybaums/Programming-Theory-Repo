@@ -24,6 +24,9 @@ public class Keeper : MonoBehaviour
     private int grassesNeeded = 0;
     private int foodNeeded = 0;
 
+    // This variable is used as a check so games don't end early
+    private int currentItems = 0;
+
     private BuildingUI buildingUI;
 
     public bool gameWon = false;
@@ -34,6 +37,7 @@ public class Keeper : MonoBehaviour
         qualitySlider = GameObject.Find("Habitat Quality").GetComponent<Slider>();
         buildingUI = GameObject.Find("Building UI").GetComponent<BuildingUI>();
         gameManager = GameObject.Find("Focal Point").GetComponent<GameManager>();
+        Debug.Log("Keeper.cs Start() habitatquality: " + habitatQuality);
     }
 
     // Update is called once per frame
@@ -133,14 +137,16 @@ public class Keeper : MonoBehaviour
     public void CheckHabitatQuality()
     {
         // player wins the game if the habitat quality is above 80%
-        if (habitatQuality == 1.0f || CheckAnimals())
+        if (habitatQuality > 0.8f && CheckAnimals())
         {
+            Debug.Log("Keeper.cs Check habitatquality (WIN): " + habitatQuality);
             gameWon = true;
             gameManager.GameOver();
 
-        } else if (habitatQuality < 0.1f && CheckAnimals() == false) 
+        } else if (habitatQuality < 0.1f && CheckAnimals() == false && currentItems > 3) 
         {
             // player loses the game if habitat quality is poor and animals are unhappy
+            Debug.Log("Keeper.cs Check habitatquality (LOSE): " + habitatQuality);
             gameWon = false;
             gameManager.GameOver();
         }
@@ -154,7 +160,7 @@ public class Keeper : MonoBehaviour
             // check if animal happiness falls below %15
             if (animals[i].GetComponent<Animal>().animalHappiness < 0.15)
             {
-                Debug.Log(animals[i].GetComponent<Animal>().animalHappiness);
+                Debug.Log("animals" + i + " " + animals[i].GetComponent<Animal>().animalHappiness);
                 check = false;
                 break;
 
@@ -182,7 +188,7 @@ public class Keeper : MonoBehaviour
         if (buildingUI.bulldozing && Input.GetMouseButtonDown(0))
         {
             treesCurrent--;
-            
+            currentItems--;
             for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
@@ -193,7 +199,7 @@ public class Keeper : MonoBehaviour
         else
         {
             treesCurrent++;
-
+            currentItems++;
             for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
@@ -212,7 +218,7 @@ public class Keeper : MonoBehaviour
         if (buildingUI.bulldozing && Input.GetMouseButtonDown(0))
         {
             rocksCurrent--;
-            
+            currentItems--;
             for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
@@ -223,7 +229,7 @@ public class Keeper : MonoBehaviour
         else
         {
             rocksCurrent++;
-            
+            currentItems++;
             for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
@@ -242,7 +248,7 @@ public class Keeper : MonoBehaviour
         if (buildingUI.bulldozing && Input.GetMouseButtonDown(0))
         {
             grassesCurrent--;
-            
+            currentItems--;
             for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
@@ -253,7 +259,7 @@ public class Keeper : MonoBehaviour
         else
         {
             grassesCurrent++;
-            
+            currentItems++;
             for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
@@ -272,7 +278,7 @@ public class Keeper : MonoBehaviour
         if (buildingUI.bulldozing && Input.GetMouseButtonDown(0))
         {
             foodCurrent--;
-            
+            currentItems--;
             for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
@@ -283,7 +289,7 @@ public class Keeper : MonoBehaviour
         else
         {
             foodCurrent++;
-            
+            currentItems++;
             for (int i = 0; i < animals.Count; i++)
             {
                 //animal check happiness
